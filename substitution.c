@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     char key[KEY_LEN + 1];
     char *raw_key = argv[1];
 
-    if ((int) strlen(raw_key) != KEY_LEN)
+    if ((int)strlen(raw_key) != KEY_LEN)
     {
         printf("Key must contain 26 characters.\n");
         return 1;
@@ -43,7 +43,31 @@ int main(int argc, char *argv[])
     }
     key[KEY_LEN] = '\0';
 
-    printf("%s\n", key);
+    int max_len = 100;
+    char plaintext[max_len];
+    char ciphertext[max_len];
+    printf("Plaintext: ");
+    fgets(plaintext, max_len, stdin);
+    int plaintext_len = strlen(plaintext);
+
+    for (int i = 0; i < plaintext_len; i++)
+    {
+        if (!isalpha(plaintext[i]))
+        {
+            ciphertext[i] = plaintext[i];
+        }
+        else if (islower(plaintext[i]))
+        {
+            int lowercase_offset = 32;
+            ciphertext[i] = tolower(key[(int)plaintext[i] - lowercase_offset - 'A']);
+        }
+        else
+        {
+            ciphertext[i] = key[(int)plaintext[i] - 'A'];
+        }
+    }
+
+    printf("Ciphertext: %s", ciphertext);
 
     return 0;
 }
